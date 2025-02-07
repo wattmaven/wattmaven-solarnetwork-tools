@@ -9,5 +9,5 @@ pre-commit:
 pre-push:
   parallel: true
   commands:
-    commitlint:
+    commit-check:
       run: uv run cz check --rev-range HEAD~1..HEAD
