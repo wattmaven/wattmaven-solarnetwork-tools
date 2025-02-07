@@ -10,4 +10,4 @@ pre-push:
   parallel: true
   commands:
     commitlint:
-      run: cz check --rev-range HEAD~1..HEAD
+      run: uv run cz check --rev-range HEAD~1..HEAD

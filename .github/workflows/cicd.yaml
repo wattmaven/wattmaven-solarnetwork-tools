@@ -18,6 +18,11 @@ permissions:
 jobs:
   ci-smoke-test:
     runs-on: ubuntu-latest
+    env:
+      SOLARNETWORK_HOST: ${{ secrets.SOLARNETWORK_HOST }}
+      SOLARNETWORK_TOKEN: ${{ secrets.SOLARNETWORK_TOKEN }}
+      SOLARNETWORK_SECRET: ${{ secrets.SOLARNETWORK_SECRET }}
+      SOLARNETWORK_TEST_NODE_ID: ${{ secrets.SOLARNETWORK_TEST_NODE_ID }}
 
     steps:
       - uses: actions/checkout@v4
