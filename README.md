@@ -13,7 +13,7 @@ pip install wattmaven-solarnetwork-tools
 See [examples](./examples) for usage examples.
 
 ```python
-from wattmaven_solarnetwork_tools import (
+from wattmaven_solarnetwork_tools.core.solarnetwork_client import (
     SolarNetworkClient,
     SolarNetworkCredentials,
 )
