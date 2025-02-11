@@ -1,7 +1,8 @@
 import json
 from dataclasses import dataclass
 from datetime import datetime, timezone
-from typing import Any, Dict, Optional
+from enum import Enum
+from typing import Any, Dict, Optional, Union
 from urllib.parse import urlencode
 
 import requests
@@ -10,6 +11,18 @@ from wattmaven_solarnetwork_tools.core.authentication import (
     generate_auth_header,
     get_x_sn_date,
 )
+
+
+class HTTPMethod(Enum):
+    """The available SolarNetwork API methods."""
+
+    GET = "GET"
+    POST = "POST"
+    PUT = "PUT"
+    DELETE = "DELETE"
+    PATCH = "PATCH"
+    HEAD = "HEAD"
+    OPTIONS = "OPTIONS"
 
 
 @dataclass
@@ -36,7 +49,7 @@ class SolarNetworkClient:
 
     def _prepare_request(
         self,
-        method: str,
+        method: Union[str, HTTPMethod],
         path: str,
         params: Optional[Dict[str, Any]] = None,
         data: Optional[Dict[str, Any]] = None,
@@ -63,11 +76,13 @@ class SolarNetworkClient:
             "x-sn-date": date,
         }
 
+        method_str = method.value if isinstance(method, HTTPMethod) else method.upper()
+
         # Generate auth header
         auth = generate_auth_header(
             self.credentials.token,
             self.credentials.secret,
-            method,
+            method_str,
             path,
             urlencode(params) if params else "",
             headers,
@@ -80,7 +95,7 @@ class SolarNetworkClient:
             headers["Content-Type"] = "application/json"
 
         return requests.Request(
-            method=method,
+            method=method_str,
             url=f"https://{self.credentials.host}{path}",
             params=params,
             headers=headers,
@@ -89,7 +104,7 @@ class SolarNetworkClient:
 
     def request(
         self,
-        method: str,
+        method: Union[str, HTTPMethod],
         path: str,
         params: Optional[Dict[str, Any]] = None,
         data: Optional[Dict[str, Any]] = None,

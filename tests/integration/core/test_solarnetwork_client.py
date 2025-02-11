@@ -1,6 +1,7 @@
 import pytest
 
 from wattmaven_solarnetwork_tools.core.solarnetwork_client import (
+    HTTPMethod,
     SolarNetworkClient,
     SolarNetworkCredentials,
 )
@@ -23,6 +24,12 @@ class TestSolarNetworkClient:
             response = client.request("GET", "/solarquery/api/v1/sec/nodes")
             assert response.status_code == 403
             assert response.json()["success"] is False
+
+    def test_get_nodes_with_valid_credentials_using_method_enum(self, credentials):
+        with SolarNetworkClient(credentials) as client:
+            response = client.request(HTTPMethod.GET, "/solarquery/api/v1/sec/nodes")
+            assert response.status_code == 200
+            assert response.json()["success"] is True
 
     def test_get_datum_list_with_random_order_of_parameters(
         self, credentials, test_node_id
