@@ -20,5 +20,8 @@ jobs:
       - name: install dependencies
         run: uv sync --all-extras --dev
 
+      - name: build package
+        run: uv build
+
       - name: release
         run: uv publish --index pypi
